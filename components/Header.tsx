@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Activity, Cpu, Wifi } from 'lucide-react';
 
+import React, { useState, useEffect } from 'react';
+
+// Define the interface for the Header component props to fix the type error in App.tsx
 interface HeaderProps {
-  onConnect?: () => void;
-  isAuthenticated?: boolean;
-  onLogout?: () => void;
+  onConnect: () => void;
+  isAuthenticated: boolean;
+  onLogout: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ onConnect, isAuthenticated, onLogout }) => {
@@ -16,58 +17,41 @@ const Header: React.FC<HeaderProps> = ({ onConnect, isAuthenticated, onLogout })
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 h-16 border-b border-neutral-100 flex items-center bg-white/80 backdrop-blur-xl z-50 px-8">
-      {/* Left: Branding & Clock */}
-      <div className="flex items-center gap-8">
-        <div className="flex items-center gap-3">
-          <div className="w-2 h-2 bg-black"></div>
-          <span className="text-sm font-bold tracking-tight uppercase">System 01</span>
+    <header className="fixed top-0 left-0 right-0 h-20 flex items-start justify-between z-[100] px-8 pt-8 pointer-events-none font-sans">
+      {/* Top Left: Meta */}
+      <div className="flex flex-col pointer-events-auto">
+        <div className="flex items-center gap-2 mb-0.5">
+          <div className="w-1.5 h-1.5 bg-white"></div>
+          <span className="text-[10px] font-mono uppercase tracking-[0.6em] text-white">Manual_V1.0</span>
         </div>
-        <div className="h-4 w-[1px] bg-neutral-200"></div>
-        <div className="flex flex-col">
-          <span className="text-[9px] font-mono text-neutral-400 tracking-widest uppercase">UTC_Reference</span>
-          <span className="text-[10px] font-mono tabular-nums font-medium">
-            {time.toLocaleTimeString('en-GB', { hour12: false })}
-          </span>
-        </div>
+        <span className="text-[9px] font-mono text-white/40 tabular-nums uppercase tracking-widest pl-4">
+          {time.toLocaleTimeString('en-GB', { hour12: false })} UTC_REF
+        </span>
       </div>
 
-      {/* Center: The Void (Swiss Design Essential) */}
-      <div className="flex-1"></div>
-
-      {/* Right: Instrument Cluster */}
-      <div className="flex items-center gap-10">
-        <div className="hidden md:flex items-center gap-6">
-          <div className="flex flex-col items-end">
-            <span className="text-[8px] font-mono text-neutral-400 tracking-widest uppercase">Latency</span>
-            <div className="flex items-center gap-1">
-              <Activity size={10} className="text-emerald-500" />
-              <span className="text-[10px] font-mono tabular-nums">12ms</span>
+      {/* Top Right: Action - Conditional rendering based on authentication status */}
+      <div className="flex items-center gap-8 pointer-events-auto">
+        {isAuthenticated ? (
+          <button 
+            onClick={onLogout}
+            className="flex items-center gap-4 group"
+          >
+            <span className="text-[9px] font-mono uppercase tracking-[0.4em] text-white/40 group-hover:text-white transition-colors">Active Session</span>
+            <div className="w-8 h-8 flex items-center justify-center border border-white/10 bg-white/5 backdrop-blur-sm group-hover:border-white group-hover:bg-white group-hover:text-black transition-all">
+              <span className="text-[10px] font-mono uppercase">Exit</span>
             </div>
-          </div>
-          <div className="flex flex-col items-end">
-            <span className="text-[8px] font-mono text-neutral-400 tracking-widest uppercase">VRAM_LOAD</span>
-            <div className="flex items-center gap-1">
-              <Cpu size={10} className="text-swiss-orange" />
-              <span className="text-[10px] font-mono tabular-nums">4.2GB</span>
+          </button>
+        ) : (
+          <button 
+            onClick={onConnect}
+            className="flex items-center gap-4 group"
+          >
+            <span className="text-[9px] font-mono uppercase tracking-[0.4em] text-white/40 group-hover:text-white transition-colors">Restricted Access</span>
+            <div className="w-8 h-8 flex items-center justify-center border border-white/10 bg-white/5 backdrop-blur-sm group-hover:border-white group-hover:bg-white group-hover:text-black transition-all px-6">
+              <span className="text-[10px] font-mono uppercase">Login</span>
             </div>
-          </div>
-        </div>
-
-        {/* Precision Toggle */}
-        <button 
-          onClick={isAuthenticated ? onLogout : onConnect}
-          className="flex items-center bg-neutral-50 border border-neutral-200 rounded-full p-1 group hover:border-black transition-colors"
-        >
-          <div className={`
-            px-3 py-1 text-[9px] font-bold tracking-widest rounded-full transition-all duration-300
-            ${!isAuthenticated ? 'bg-black text-white shadow-sm' : 'text-neutral-400'}
-          `}>OFF</div>
-          <div className={`
-            px-3 py-1 text-[9px] font-bold tracking-widest rounded-full transition-all duration-300
-            ${isAuthenticated ? 'bg-emerald-500 text-white shadow-sm' : 'text-neutral-400'}
-          `}>ON</div>
-        </button>
+          </button>
+        )}
       </div>
     </header>
   );

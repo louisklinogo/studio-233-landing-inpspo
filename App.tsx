@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import WorkflowEngine from './components/WorkflowEngine';
 import Manifesto from './components/Manifesto';
 import Login from './components/Login';
 import InfiniteCanvas from './components/InfiniteCanvas';
@@ -54,7 +55,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white text-swiss-black font-sans selection:bg-black selection:text-white">
+    <div className="min-h-screen bg-white text-swiss-black font-sans selection:bg-swiss-orange selection:text-white">
       <Header 
         onConnect={handleConnect} 
         isAuthenticated={isAuthenticated}
@@ -62,13 +63,16 @@ const App: React.FC = () => {
       />
       
       <main>
-        {/* Asymmetric Swiss Hero with Studio Monolith */}
+        {/* Act I: The Manual (Typography & Metadata) */}
         <Hero />
         
-        {/* Viewfinder Expansion Story - Transition to Infinite Canvas */}
+        {/* Act II: The Engine (The Canvas Animation - Restored) */}
+        <WorkflowEngine />
+        
+        {/* Act III: The Field (Infinite Canvas Exploration) */}
         <InfiniteCanvas />
         
-        {/* Manifesto & Context */}
+        {/* Act IV: The Word (Manifesto) */}
         <div className="relative z-20 bg-white">
             <Manifesto />
         </div>
